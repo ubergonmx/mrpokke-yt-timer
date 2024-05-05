@@ -1,4 +1,4 @@
-export async function scrapeMrPokkeStreams(): Promise<[boolean, string]> {
+export async function scrapeYouTubeStreams(): Promise<[boolean, string]> {
   const res = await fetch("https://www.youtube.com/@mrpokkee/streams");
   const text = await res.text();
   const isLive = !!text.match(/"iconType":"LIVE"/);
