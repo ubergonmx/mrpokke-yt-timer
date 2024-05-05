@@ -15,6 +15,7 @@ export async function getYouTubeStreamTime(
   const [_, videoId] = await scrapeYouTubeStreams();
   if (!videoId) return ["", ""];
   const [title, startTime] = await scrapeLiveYouTubeVideo(videoId);
+  if (!title || !startTime) return ["", ""];
   if (useAgo) return [title, startTime];
   const duration = startTime.includes("minutes")
     ? calculateDuration(startTime)
