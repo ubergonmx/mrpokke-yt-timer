@@ -1,11 +1,18 @@
-export function calculateDuration(startTimeStr: string): string {
+export function calculateDuration(
+  startTimeStr: string,
+  isDate: boolean = false
+): string {
   if (!startTimeStr) return "";
   const currentTime = new Date();
-  const startTime = calculateStartTime(startTimeStr);
+  const startTime = isDate
+    ? new Date(startTimeStr)
+    : calculateStartTime(startTimeStr);
   const diff = Math.abs(currentTime.getTime() - startTime.getTime());
   const durationHours = Math.floor(diff / (1000 * 60 * 60));
   const durationMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  return `${durationHours} hours ${durationMinutes} minutes`;
+  const hourWord = durationHours === 1 ? "hr" : "hrs";
+  const minuteWord = durationMinutes === 1 ? "min" : "mins";
+  return `${durationHours} ${hourWord} ${durationMinutes} ${minuteWord}`;
 }
 
 export function calculateStartTime(startTimeStr: string): Date {
@@ -21,6 +28,9 @@ export function calculateStartTime(startTimeStr: string): Date {
 
     // Subtract the amount of time from the current time based on the unit
     switch (unit) {
+      case "seconds":
+        startTime.setSeconds(currentTime.getSeconds() - amount);
+        break;
       case "minutes":
         startTime.setMinutes(currentTime.getMinutes() - amount);
         break;
@@ -30,7 +40,6 @@ export function calculateStartTime(startTimeStr: string): Date {
       case "days":
         startTime.setDate(currentTime.getDate() - amount);
         break;
-      // Add more cases as needed for other units
       default:
         console.error("Unsupported time unit:", unit);
     }
