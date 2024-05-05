@@ -1,10 +1,6 @@
-import Image from "next/image";
+import Timer from "@/components/Timer";
+import { isMrPokkeStreaming } from "@/lib/actions";
 
-export default function Home() {
-  return (
-    // transparent background
-    <main className="bg-transparent h-screen flex flex-col justify-center items-center"> 
-      <p className="text-6xl font-semibold">5hr and 30 mins</p>
-    </main>
-  );
+export default async function Home() {
+  return <Timer isLive={await isMrPokkeStreaming()} />;
 }
