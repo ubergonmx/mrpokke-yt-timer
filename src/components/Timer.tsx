@@ -2,26 +2,30 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { getMrPokkeStreamTime } from "@/lib/actions";
+import { getYouTubeStreamTime } from "@/lib/actions";
 
 export default function Timer({ isLive }: { isLive: boolean }) {
+  const [live, setLive] = useState(isLive);
   const [duration, setDuration] = useState("");
   const searchParams = useSearchParams();
   const isDark = searchParams.get("dark") === "true";
 
   useEffect(() => {
-    fetchStreamTime();
-    const interval = setInterval(fetchStreamTime, 1000 * 60); // Update every minute
+    checkStream();
+    const interval = setInterval(checkStream, 1000 * 60); // Update every minute
     return () => clearInterval(interval);
   }, []);
 
-  const fetchStreamTime = () => {
-    try{
-      getMrPokkeStreamTime().then(([, duration]) => {
+  const checkStream = () => {
+    try {
+      getYouTubeStreamTime().then(([, duration]) => {
+        if (duration === "") {
+          setLive(false);
+          return;
+        }
         setDuration(duration);
       });
-    }
-    catch(e){
+    } catch (e) {
       console.error("Error fetching stream time", e);
     }
   };
@@ -33,7 +37,7 @@ export default function Timer({ isLive }: { isLive: boolean }) {
           isDark ? "text-black" : "text-white"
         }`}
       >
-        {isLive ? duration : "MrPokke is not live."}
+        {live ? duration : "MrPokke is not live."}
       </p>
     </main>
   );
