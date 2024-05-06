@@ -91,7 +91,7 @@ export default function Timer({ isLive }: { isLive: boolean }) {
     }
   }, [duration]);
 
-  // play when notification is true
+  // Play when notification is true
   useEffect(() => {
     const audio = new Audio("/sfx/notification.mp3");
 
@@ -105,20 +105,24 @@ export default function Timer({ isLive }: { isLive: boolean }) {
       audio.pause();
     }
 
-    // Stop
+    // Stop for cleanup
     return () => {
       audio.pause();
     };
   }, [notification]);
 
   return (
-    <main className="bg-transparent h-screen flex flex-col justify-center items-center">
+    <main
+      className={`bg-opacity-50 h-screen flex flex-col justify-center items-center ${
+        isDark ? "bg-white" : "bg-black"
+      }`}
+    >
       <p
         className={`text-xl font-semibold ${
           isDark ? "text-black" : "text-white"
         }`}
       >
-        {live ? duration : "MrPokke is not live."}
+        {live ? duration : "MrPokke is not live on YT"}
       </p>
       {notification && (
         <>
