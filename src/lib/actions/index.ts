@@ -4,9 +4,9 @@ import { scrapeYouTubeStreams, scrapeLiveYouTubeVideo } from "../scraper";
 import { calculateDuration } from "@/utils";
 import { Redis } from "@upstash/redis";
 
-export async function isYouTubeStreaming(): Promise<boolean> {
-  const [isLive] = await scrapeYouTubeStreams();
-  return isLive;
+export async function isYouTubeStreaming(): Promise<[boolean, string]> {
+  const [isLive, _, error] = await scrapeYouTubeStreams();
+  return [isLive, error];
 }
 
 export async function getYouTubeStreamTime(

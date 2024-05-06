@@ -11,7 +11,7 @@ import { calculateDuration, calculateStartTime } from "@/utils";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const isLive = await isYouTubeStreaming();
+  const [isLive, error] = await isYouTubeStreaming();
   let message = "MrPokke is not live.";
 
   if (isLive) {
@@ -33,6 +33,10 @@ export async function GET() {
     }
   } else {
     await clearYouTubeStreamTimeCache();
+  }
+
+  if (error) {
+    message += `Error: ${error}`;
   }
 
   return Response.json({ message });
