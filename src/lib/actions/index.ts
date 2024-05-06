@@ -10,17 +10,28 @@ export async function isYouTubeStreaming(): Promise<boolean> {
 }
 
 export async function getYouTubeStreamTime(
-  useAgo: boolean = false
-): Promise<[string, string]> {
-  const [_, videoId] = await scrapeYouTubeStreams();
-  if (!videoId) return ["", ""];
-  const [title, startTime] = await scrapeLiveYouTubeVideo(videoId);
-  if (!title || !startTime) return ["", ""];
-  if (useAgo) return [title, startTime];
-  const duration = startTime.includes("minutes")
-    ? calculateDuration(startTime)
-    : calculateDuration(await getYouTubeStreamTimeCached(), true);
-  return [title, duration];
+  useAgo: boolean = false,
+  skipScraper: boolean = false
+): Promise<[string, string, boolean]> {
+  if (!skipScraper) {
+    const [_, videoId] = await scrapeYouTubeStreams();
+    if (!videoId) return ["", "", false];
+    const [title, startTime] = await scrapeLiveYouTubeVideo(videoId);
+    if (!title || !startTime) return ["", "", false];
+    if (useAgo) return [title, startTime, false];
+    const hasMinutes = startTime.includes("minute");
+    const duration = hasMinutes
+      ? calculateDuration(startTime)
+      : calculateDuration(await getYouTubeStreamTimeCached(), true);
+
+    return [title, duration, hasMinutes];
+  } else {
+    const duration = calculateDuration(
+      await getYouTubeStreamTimeCached(),
+      true
+    );
+    return ["", duration, true];
+  }
 }
 
 export async function getYouTubeStreamTimeCached(): Promise<string> {

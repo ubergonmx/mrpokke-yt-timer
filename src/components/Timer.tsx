@@ -34,6 +34,7 @@ export default function Timer({ isLive }: { isLive: boolean }) {
   const [duration, setDuration] = useState("");
   const [notification, setNotification] = useState(false);
   const [image, setImage] = useState(defaultSettings.img);
+  const [skipScraper, setSkipScraper] = useState(false);
   const searchParams = useSearchParams();
   const isDark = searchParams.get("dark") === "true";
 
@@ -50,15 +51,18 @@ export default function Timer({ isLive }: { isLive: boolean }) {
 
   const checkStream = () => {
     try {
-      getYouTubeStreamTime().then(([, duration]) => {
-        if (duration === "") {
-          setLive(false);
-          return;
-        } else if (!live && duration !== "") {
-          setLive(true);
+      getYouTubeStreamTime(false, skipScraper).then(
+        ([, duration, hasMinutes]) => {
+          if (duration === "") {
+            setLive(false);
+            return;
+          } else if (!live && duration !== "") {
+            setLive(true);
+          }
+          setSkipScraper(hasMinutes);
+          setDuration(duration);
         }
-        setDuration(duration);
-      });
+      );
     } catch (e) {
       console.error("Error fetching stream time", e);
     }
