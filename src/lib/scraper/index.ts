@@ -1,5 +1,6 @@
+import fetch from "node-fetch";
+
 export async function scrapeYouTubeStreams(): Promise<[boolean, string]> {
-  require("isomorphic-fetch");
   const res = await fetch("https://www.youtube.com/@mrpokkee/streams");
   const text = await res.text();
   const isLive = !!text.match(/"iconType":"LIVE"/);
