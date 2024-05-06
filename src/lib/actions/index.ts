@@ -13,7 +13,13 @@ export async function getYouTubeStreamTime(
   useAgo: boolean = false,
   skipScraper: boolean = false
 ): Promise<[string, string, boolean]> {
+  console.log(
+    "Getting YouTube stream time... [useAgo: %s, skipScraper: %s]",
+    useAgo,
+    skipScraper
+  );
   if (!skipScraper) {
+    console.log("Running scraper...");
     const [_, videoId] = await scrapeYouTubeStreams();
     if (!videoId) return ["", "", false];
     const [title, startTime] = await scrapeLiveYouTubeVideo(videoId);
@@ -26,6 +32,7 @@ export async function getYouTubeStreamTime(
 
     return [title, duration, hasMinutes];
   } else {
+    console.log("Skipping scraper...");
     const duration = calculateDuration(
       await getYouTubeStreamTimeCached(),
       true

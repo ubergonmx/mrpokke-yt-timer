@@ -1,4 +1,5 @@
 export async function scrapeYouTubeStreams(): Promise<[boolean, string]> {
+  require("isomorphic-fetch");
   const res = await fetch("https://www.youtube.com/@mrpokkee/streams");
   const text = await res.text();
   const isLive = !!text.match(/"iconType":"LIVE"/);
@@ -10,6 +11,7 @@ export async function scrapeYouTubeStreams(): Promise<[boolean, string]> {
 export async function scrapeLiveYouTubeVideo(
   videoId: string
 ): Promise<[string, string]> {
+  require("isomorphic-fetch");
   const res = await fetch(`https://www.youtube.com/watch?v=${videoId}`);
   const text = await res.text();
   const title = text.match(/<title>(.+?)<\/title>/);
