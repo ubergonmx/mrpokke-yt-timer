@@ -115,12 +115,12 @@ export default function Timer({ isLive }: { isLive: boolean }) {
 
   return (
     <main
-      className={`bg-opacity-50 h-screen flex flex-col justify-center items-center ${
+      className={`bg-opacity-50 h-screen flex justify-center items-center overflow-hidden p-4 ${
         isDark ? "bg-white" : "bg-black"
       }`}
     >
       <p
-        className={`text-xl font-semibold ${
+        className={`text-lg font-semibold ${
           isDark ? "text-black" : "text-white"
         }`}
       >
@@ -129,13 +129,13 @@ export default function Timer({ isLive }: { isLive: boolean }) {
       {notification && (
         <>
           <p
-            className={`text-2xl font-semibold ${
+            className={`text-lg font-semibold text-center ${
               isDark ? "text-black" : "text-white"
             }`}
           >
             END YT STREAM
           </p>
-          <Image src={image} alt="END YT STREAM" width={200} height={200} />
+          <Image src={image} alt="END YT STREAM" width={70} height={70} />
         </>
       )}
     </main>
