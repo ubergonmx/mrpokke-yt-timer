@@ -43,6 +43,7 @@ export default function Timer({ isLive }: { isLive: boolean }) {
   const hourQuery = searchParams.get("hour") ?? defaultSettings.hour.toString();
   const minuteQuery =
     searchParams.get("minute") ?? defaultSettings.minute.toString();
+  const intervalQuery = parseInt(searchParams.get("interval") ?? "60");
 
   useEffect(() => {
     const checkStream = () => {
@@ -66,7 +67,7 @@ export default function Timer({ isLive }: { isLive: boolean }) {
     };
 
     checkStream();
-    const interval = setInterval(checkStream, 1000 * 60); // Update every minute
+    const interval = setInterval(checkStream, 1000 * intervalQuery);
     return () => clearInterval(interval);
   }, [skipScraper]);
 
