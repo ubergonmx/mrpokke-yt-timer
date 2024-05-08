@@ -97,8 +97,6 @@ export default function Timer({ isLive }: { isLive: boolean }) {
   // Play when notification is true
   useEffect(() => {
     const audio = new Audio("/sfx/notification.mp3");
-
-    audio.loop = true;
     audio.volume = 0.5;
 
     // Play
